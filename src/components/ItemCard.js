@@ -47,7 +47,7 @@ export default class Top5item extends React.Component{
         event.preventDefault();
         event.target.style.background = "#e1e4cb";
         let data = event.dataTransfer.getData("text");
-        this.props.dnd(this.props.index,parseInt(data),this.props.currentList)
+        this.props.dnd(this.props.index,parseInt(data))
     }
 
     handleDragOver = (event) =>{

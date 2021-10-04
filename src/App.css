@@ -165,6 +165,9 @@ body {
   cursor: pointer;
 }
 
+.disabled {
+  background-color: lightgray;
+}
 
 .top5-button:hover {
   cursor: pointer;

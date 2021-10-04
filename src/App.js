@@ -12,7 +12,7 @@ import Workspace from './components/Workspace.js';
 import Statusbar from './components/Statusbar.js'
 import jsTPS from './jsTPS';
 import ChangeItem_Transaction from './transactions/ChangeItem_Transaction'
-import EditToolbar from './components/EditToolbar';
+import ChangeState_Transaction from './transactions/ChangeState_Transaction'
 
 class App extends React.Component {
     constructor(props) {
@@ -187,10 +187,6 @@ class App extends React.Component {
         modal.classList.remove("is-visible");
     }
 
-    getName = () => {
-        return this.state.currentList
-    }
-
     editItem = (key, newName) => {
         let theList = this.state.currentList;
 
@@ -213,8 +209,14 @@ class App extends React.Component {
     }
 
 
-    dnd = (i,j,curr) => {
-        let theList = curr.items
+    dnd = (i,j) => {
+        let transaction = new ChangeState_Transaction(this,i,j);
+        this.tps.addTransaction(transaction);
+    }
+
+    dnd2 = (i,j) =>
+    {
+        let theList = this.state.currentList.items
         theList.splice(i, 0, theList.splice(j, 1)[0])
         console.log(theList)
 
@@ -225,6 +227,7 @@ class App extends React.Component {
             this.db.mutationUpdateList(theList);
         });
     }
+
 
     undo = () =>{
         if (this.tps.hasTransactionToUndo()) {
@@ -240,12 +243,26 @@ class App extends React.Component {
     }
 
     
+    redo = () =>{
+        if (this.tps.hasTransactionToRedo()) {
+            this.tps.doTransaction();
+        }
+        this.setState(prevState => ({
+            currentList: prevState.currentList,
+            sessionData: prevState.sessionData
+        }),() => {
+            
+        });
+    }
+
+    
     render() {
         return (
             <div id="app-root">
                 <Banner 
                     title='Top 5 Lister'
                     undo={this.undo}
+                    redo={this.redo}
                     closeCallback={this.closeCurrentList} />
                 <Sidebar
                     heading='Your Lists'
@@ -267,7 +284,7 @@ class App extends React.Component {
                 <DeleteModal
                     hideDeleteListModalCallback={this.hideDeleteListModal}
                     modalDelete={this.modalDelete}
-                    listPairKey={this.state.currentList}
+                    listKeyPair={this.state.currentList}
                 />
             </div>
         );
