@@ -10,8 +10,9 @@ import Banner from './components/Banner.js'
 import Sidebar from './components/Sidebar.js'
 import Workspace from './components/Workspace.js';
 import Statusbar from './components/Statusbar.js'
-import jsTPS from './common/jsTPS';
+import jsTPS from './jsTPS';
 import ChangeItem_Transaction from './transactions/ChangeItem_Transaction'
+import EditToolbar from './components/EditToolbar';
 
 class App extends React.Component {
     constructor(props) {
@@ -225,7 +226,7 @@ class App extends React.Component {
         });
     }
 
-    undo() {
+    undo = () =>{
         if (this.tps.hasTransactionToUndo()) {
             this.tps.undoTransaction();
         }
@@ -244,6 +245,7 @@ class App extends React.Component {
             <div id="app-root">
                 <Banner 
                     title='Top 5 Lister'
+                    undo={this.undo}
                     closeCallback={this.closeCurrentList} />
                 <Sidebar
                     heading='Your Lists'

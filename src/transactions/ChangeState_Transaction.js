@@ -1,4 +1,4 @@
-import jsTPS_Transaction from "../../common/jsTPS.js"
+import jsTPS_Transaction from "../../src/jsTPS"
 
 export default class ChangeItem_Transaction extends jsTPS_Transaction {
     constructor(initModel,Initoldstate, Initnewstate) {
